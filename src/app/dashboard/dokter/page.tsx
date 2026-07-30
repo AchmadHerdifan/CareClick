@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import Link from 'next/link'
+import { Users, ClipboardList, FolderOpen, Activity, ChevronRight, CheckCircle2, Clock } from 'lucide-react'
 
 export default async function DashboardDokter() {
   const supabase = await createServerSupabaseClient()
@@ -49,84 +50,140 @@ export default async function DashboardDokter() {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-500 to-teal-600 p-8 text-white shadow-xl">
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
-        <div className="relative z-10 space-y-2">
-          <span className="text-xs font-semibold bg-white/20 text-white px-2.5 py-1 rounded-full uppercase tracking-wider">Panel Dokter</span>
-          <h1 className="text-3xl font-extrabold tracking-tight">Selamat Datang, {displayName}</h1>
-          <p className="text-emerald-50 font-medium max-w-md">
-            Kelola pasien, tulis rekam medis, dan pantau antrian hari ini.
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-600 via-emerald-600 to-emerald-800 p-8 sm:p-10 text-white shadow-xl">
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl" />
+        
+        <div className="relative z-10 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/10 text-xs font-semibold tracking-wider uppercase mb-2">
+            <Activity className="w-4 h-4 text-emerald-300" />
+            Panel Dokter
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Selamat Datang, dr. {displayName}</h1>
+          <p className="text-emerald-50 font-medium max-w-lg leading-relaxed text-sm sm:text-base">
+            Pantau antrian hari ini dan catat rekam medis pasien dengan cepat. Semoga hari Anda produktif!
           </p>
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="text-2xl w-12 h-12 rounded-2xl flex items-center justify-center bg-emerald-500/10 text-emerald-500 border border-emerald-500/15">🎟️</div>
+        <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-gradient-to-br from-emerald-500/5 to-transparent relative overflow-hidden">
+          <div className="flex items-center gap-5 relative z-10">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 shadow-sm">
+              <ClipboardList className="w-7 h-7" />
+            </div>
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Antrian Hari Ini</p>
-              <p className="text-3xl font-extrabold text-slate-800">{antrianCount || 0}</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Antrian Hari Ini</p>
+              <p className="text-3xl font-black text-slate-800 mt-1">{antrianCount || 0}</p>
             </div>
           </div>
+          <div className="absolute -right-4 -bottom-4 opacity-5 text-emerald-500 transform rotate-12">
+            <Users className="w-32 h-32" />
+          </div>
         </div>
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="text-2xl w-12 h-12 rounded-2xl flex items-center justify-center bg-teal-500/10 text-teal-500 border border-teal-500/15">📁</div>
-            <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Rekam Medis</p>
-              <p className="text-3xl font-extrabold text-slate-800">{rekamMedisCount || 0}</p>
+        <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-gradient-to-br from-teal-500/5 to-transparent relative overflow-hidden">
+          <div className="flex items-center gap-5 relative z-10">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-teal-500/10 text-teal-600 border border-teal-500/20 shadow-sm">
+              <FolderOpen className="w-7 h-7" />
             </div>
+            <div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Rekam Medis</p>
+              <p className="text-3xl font-black text-slate-800 mt-1">{rekamMedisCount || 0}</p>
+            </div>
+          </div>
+          <div className="absolute -right-4 -bottom-4 opacity-5 text-teal-500 transform -rotate-12">
+            <FolderOpen className="w-32 h-32" />
           </div>
         </div>
       </div>
 
-      {/* Antrian Aktif */}
-      <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-slate-800 mb-4">Antrian Aktif Hari Ini</h2>
-        {antrianAktif && antrianAktif.length > 0 ? (
-          <div className="space-y-2.5">
-            {antrianAktif.map((a: any) => (
-              <div key={a.id} className="bg-slate-50 rounded-2xl p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl font-bold text-emerald-600 w-8 text-center">{a.nomor_antrian}</span>
-                  <div>
-                    <p className="font-semibold text-slate-800">{a.pasien?.nama || '-'}</p>
-                    <p className="text-xs text-slate-400">{a.poli?.nama || '-'}</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Antrian Aktif */}
+        <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-sm">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-slate-800">Antrian Aktif Hari Ini</h2>
+              <p className="text-sm text-slate-500 mt-1">Daftar pasien yang sedang menunggu dan dipanggil</p>
+            </div>
+            <Link href="/dashboard/dokter/antrian" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 hover:underline flex items-center gap-1">
+              Lihat Semua <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {antrianAktif && antrianAktif.length > 0 ? (
+            <div className="space-y-3">
+              {antrianAktif.map((a: any) => (
+                <div key={a.id} className={`rounded-2xl p-4 flex items-center justify-between border transition-all hover:shadow-md ${a.status === 'dipanggil' ? 'bg-emerald-50/50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 flex items-center justify-center rounded-xl font-black text-xl shadow-sm ${a.status === 'dipanggil' ? 'bg-emerald-500 text-white shadow-emerald-500/30' : 'bg-white text-emerald-600 border border-emerald-100'}`}>
+                      {a.nomor_antrian}
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-800 text-base">{a.pasien?.nama || '-'}</p>
+                      <p className="text-xs font-medium text-slate-500 flex items-center gap-1 mt-0.5">
+                        <Activity className="w-3 h-3" /> {a.poli?.nama || '-'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide border ${
+                      a.status === 'dipanggil' 
+                        ? 'bg-emerald-100/50 text-emerald-700 border-emerald-200' 
+                        : 'bg-amber-100/50 text-amber-700 border-amber-200'
+                    }`}>
+                      {a.status === 'dipanggil' ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                      {a.status}
+                    </span>
                   </div>
                 </div>
-                <span className={`text-xs font-bold px-2.5 py-1 rounded-xl uppercase ${a.status === 'dipanggil' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                  {a.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-slate-400 py-4 text-center">Tidak ada antrian aktif hari ini.</p>
-        )}
-      </div>
-
-      {/* Aksi Cepat */}
-      <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-sm space-y-6">
-        <div>
-          <h2 className="text-lg font-bold text-slate-800">Aksi Cepat</h2>
-          <p className="text-xs text-slate-400">Navigasi cepat ke fitur dokter</p>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-12 px-4 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+              <ClipboardList className="w-12 h-12 text-slate-300 mb-3" />
+              <p className="font-semibold text-slate-600">Tidak ada antrian aktif</p>
+              <p className="text-sm text-slate-400 mt-1">Belum ada pasien yang menunggu saat ini.</p>
+            </div>
+          )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            { href: '/dashboard/dokter/antrian', label: 'Lihat Antrian Pasien', icon: '👥', color: 'hover:border-emerald-300 hover:bg-emerald-50/50 text-emerald-600' },
-            { href: '/dashboard/dokter/rekam-medis', label: 'Input Rekam Medis', icon: '📋', color: 'hover:border-teal-300 hover:bg-teal-50/50 text-teal-600' },
-          ].map((m) => (
+
+        {/* Aksi Cepat */}
+        <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-sm flex flex-col">
+          <div>
+            <h2 className="text-xl font-bold text-slate-800">Aksi Cepat</h2>
+            <p className="text-sm text-slate-500 mt-1">Navigasi cepat ke fitur dokter</p>
+          </div>
+          
+          <div className="mt-6 flex flex-col gap-4 flex-grow">
             <Link
-              key={m.href}
-              href={m.href}
-              className={`flex items-center gap-4 p-5 rounded-2xl border border-slate-100 transition-all duration-200 shadow-sm hover:shadow ${m.color}`}
+              href="/dashboard/dokter/antrian"
+              className="flex items-center gap-4 p-5 rounded-2xl border border-slate-100 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 bg-white group hover:border-emerald-400 hover:bg-emerald-50/30"
             >
-              <span className="text-2xl">{m.icon}</span>
-              <span className="font-semibold text-slate-700 text-sm">{m.label}</span>
+              <div className="p-3 rounded-xl bg-emerald-100/50 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                <Users className="w-6 h-6" />
+              </div>
+              <div className="flex-1">
+                <span className="block font-bold text-slate-700 text-sm group-hover:text-emerald-700 transition-colors">Lihat Antrian Pasien</span>
+                <span className="text-xs text-slate-400 mt-0.5">Kelola status panggilan</span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-emerald-500" />
             </Link>
-          ))}
+
+            <Link
+              href="/dashboard/dokter/rekam-medis"
+              className="flex items-center gap-4 p-5 rounded-2xl border border-slate-100 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 bg-white group hover:border-teal-400 hover:bg-teal-50/30"
+            >
+              <div className="p-3 rounded-xl bg-teal-100/50 text-teal-600 group-hover:bg-teal-500 group-hover:text-white transition-colors">
+                <ClipboardList className="w-6 h-6" />
+              </div>
+              <div className="flex-1">
+                <span className="block font-bold text-slate-700 text-sm group-hover:text-teal-700 transition-colors">Input Rekam Medis</span>
+                <span className="text-xs text-slate-400 mt-0.5">Catat hasil pemeriksaan</span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-teal-500" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
