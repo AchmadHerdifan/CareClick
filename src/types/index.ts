@@ -2,7 +2,7 @@
 // TIPE DATA SISTEM MANAJEMEN KLINIK
 // ============================================
 
-export type Role = 'admin' | 'user' | 'dokter' | 'apoteker'
+export type Role = 'admin' | 'user' | 'dokter'
 
 export type StatusAntrian = 'menunggu' | 'dipanggil' | 'selesai' | 'batal'
 

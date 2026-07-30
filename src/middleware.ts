@@ -67,10 +67,6 @@ export async function middleware(request: NextRequest) {
       return redirectTo(`/dashboard/${role}`)
     }
     
-    if (pathname.startsWith('/dashboard/apoteker') && role !== 'apoteker') {
-      return redirectTo(`/dashboard/${role}`)
-    }
-    
     if (pathname.startsWith('/dashboard/user') && role !== 'user') {
       return redirectTo(`/dashboard/${role}`)
     }

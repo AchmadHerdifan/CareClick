@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   }
 
   const role = (data.user?.user_metadata?.role || 'user').toLowerCase()
-  const validRoles = ['admin', 'dokter', 'apoteker', 'user']
+  const validRoles = ['admin', 'dokter', 'user']
   const dashRole = validRoles.includes(role) ? role : 'user'
 
   const response = NextResponse.json({ ok: true, role: dashRole }, { status: 200 })

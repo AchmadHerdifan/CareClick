@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import SidebarDokter from '@/components/layout/SidebarDokter'
+import DashboardLayout from '@/components/layout/DashboardLayout'
 
 export default async function DokterLayout({
   children,
@@ -10,11 +11,10 @@ export default async function DokterLayout({
   const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <SidebarDokter userEmail={user?.email ?? ''} />
-      <main className="flex-1 ml-64 p-8">
-        {children}
-      </main>
-    </div>
+    <DashboardLayout
+      sidebar={<SidebarDokter userEmail={user?.email ?? ''} />}
+    >
+      {children}
+    </DashboardLayout>
   )
 }

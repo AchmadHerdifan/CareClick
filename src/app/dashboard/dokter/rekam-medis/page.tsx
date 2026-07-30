@@ -42,8 +42,6 @@ export default function DokterRekamMedisPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // Ensure if resep is empty, status_resep can just be selesai to bypass apoteker if needed,
-    // but default is menunggu.
     const status_resep = form.resep.trim() === '' ? 'selesai' : 'menunggu'
     await supabase.from('rekam_medis').insert({ ...form, status_resep })
     setShowModal(false)
@@ -145,7 +143,7 @@ export default function DokterRekamMedisPage() {
                 <textarea className="input-field" rows={2} required value={form.diagnosis} onChange={(e) => setForm({ ...form, diagnosis: e.target.value })} />
               </div>
               <div>
-                <label className="label">Resep (Berikan detail obat untuk apoteker)</label>
+                <label className="label">Resep Obat</label>
                 <textarea className="input-field" rows={2} placeholder="Contoh: Paracetamol 3x1" value={form.resep} onChange={(e) => setForm({ ...form, resep: e.target.value })} />
               </div>
               <div>

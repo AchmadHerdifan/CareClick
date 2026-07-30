@@ -36,16 +36,6 @@ const ROLE_OPTIONS = [
     inactiveBg: 'bg-white/5 border-white/10',
     textColor: 'text-emerald-400',
   },
-  {
-    role: 'apoteker',
-    label: 'Apoteker',
-    icon: '💊',
-    desc: 'Proses resep & kelola obat',
-    gradient: 'from-amber-600 to-orange-600',
-    activeBg: 'bg-amber-500/20 border-amber-500/50',
-    inactiveBg: 'bg-white/5 border-white/10',
-    textColor: 'text-amber-400',
-  },
 ]
 
 function LoginForm() {
