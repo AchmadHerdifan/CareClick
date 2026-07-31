@@ -13,6 +13,7 @@ export default async function DokterLayout({
   return (
     <DashboardLayout
       sidebar={<SidebarDokter userEmail={user?.email ?? ''} />}
+      bgClassName="bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-100"
     >
       {children}
     </DashboardLayout>

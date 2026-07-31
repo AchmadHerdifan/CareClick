@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import type { Antrian, Pasien, Dokter, Poli } from '@/types'
 
@@ -12,6 +13,7 @@ const statusColors: Record<string, string> = {
 }
 
 export default function AntrianPage() {
+  const router = useRouter()
   const supabase = createClient()
   const [data, setData] = useState<Antrian[]>([])
   const [pasienList, setPasienList] = useState<Pasien[]>([])
@@ -145,6 +147,11 @@ export default function AntrianPage() {
                       {a.status === 'dipanggil' && (
                         <button onClick={() => updateStatus(a.id, 'selesai')} className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
                           Selesai
+                        </button>
+                      )}
+                      {a.status === 'selesai' && (
+                        <button onClick={() => router.push(`/dashboard/dokter/rekam-medis?pasien_id=${a.pasien_id}`)} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
+                          Isi Rekam Medis
                         </button>
                       )}
                       {(a.status === 'menunggu' || a.status === 'dipanggil') && (

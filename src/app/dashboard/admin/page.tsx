@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { Users, UserCog, Stethoscope, ClipboardList, FolderOpen, Settings } from 'lucide-react'
 import Link from 'next/link'
+import LiveDate from '@/components/LiveDate'
 
 export default async function AdminDashboard() {
   const supabase = await createServerSupabaseClient()
@@ -51,13 +52,19 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-indigo-800 p-8 sm:p-10 text-white shadow-xl">
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl" />
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/10 text-xs font-semibold tracking-wider uppercase mb-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Sistem Aktif
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-cyan-600 to-cyan-800 p-8 sm:p-12 text-white shadow-2xl shadow-cyan-900/20">
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-cyan-300/30 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="relative z-10 space-y-4">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-wider uppercase shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse"></span>
+              Sistem Aktif
+            </div>
+            <div className="text-xs font-medium text-blue-100 bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+              <LiveDate />
+            </div>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Dashboard Admin</h1>
           <p className="text-blue-100 font-medium max-w-lg leading-relaxed text-sm sm:text-base">
@@ -69,13 +76,16 @@ export default async function AdminDashboard() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((s) => (
-          <div key={s.label} className={`relative overflow-hidden bg-white rounded-2xl border border-slate-100 p-6 flex items-center gap-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-gradient-to-br ${s.gradient}`}>
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-bold border ${s.color}`}>
+          <div key={s.label} className={`relative overflow-hidden bg-white rounded-[1.5rem] border border-slate-100 p-6 flex items-center gap-5 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1.5 bg-gradient-to-br ${s.gradient} group`}>
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-bold border transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${s.color}`}>
               {s.icon}
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">{s.label}</p>
-              <p className="text-3xl font-black text-slate-800 mt-1">{s.value}</p>
+              <p className="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest">{s.label}</p>
+              <p className="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">{s.value}</p>
+            </div>
+            <div className="absolute -right-4 -bottom-4 opacity-[0.03] transform group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-500 text-slate-900 pointer-events-none">
+              {s.icon}
             </div>
           </div>
         ))}
@@ -100,7 +110,7 @@ export default async function AdminDashboard() {
             <Link
               key={m.href}
               href={m.href}
-              className={`flex items-center gap-4 p-5 rounded-2xl border transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 bg-white group ${m.color}`}
+              className={`flex items-center gap-4 p-5 rounded-[1.25rem] border border-slate-100/80 transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-1 bg-gradient-to-b from-white to-slate-50/50 group ${m.color}`}
             >
               <div className="p-2 rounded-xl bg-slate-50 group-hover:bg-white transition-colors">
                 {m.icon}

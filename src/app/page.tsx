@@ -11,8 +11,12 @@ export default function Home() {
       {/* Header / Navbar */}
       <header className="max-w-7xl mx-auto w-full px-6 md:px-12 py-6 flex justify-between items-center z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-tr from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-            🏥
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-cyan-500/30 flex items-center justify-center shadow-lg shadow-cyan-500/20 overflow-hidden">
+            <img 
+              src="/logo.png" 
+              alt="Logo CareClick" 
+              className="w-7 h-7 object-contain drop-shadow-md"
+            />
           </div>
           <span className="font-black text-white text-2xl tracking-tight bg-clip-text bg-gradient-to-r from-white to-slate-400">
             CareClick
@@ -126,8 +130,14 @@ export default function Home() {
       {/* Footer Info & Tech Stacks */}
       <footer className="border-t border-white/5 bg-slate-950/40 py-8 z-10">
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🏥</span>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-cyan-500/30 flex items-center justify-center shadow-sm overflow-hidden">
+              <img 
+                src="/logo.png" 
+                alt="Logo CareClick" 
+                className="w-5 h-5 object-contain"
+              />
+            </div>
             <span className="font-extrabold text-white text-sm">CareClick</span>
           </div>
           

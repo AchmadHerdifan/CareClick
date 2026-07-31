@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import Link from 'next/link'
 import { Users, ClipboardList, FolderOpen, Activity, ChevronRight, CheckCircle2, Clock } from 'lucide-react'
+import LiveDate from '@/components/LiveDate'
 
 export default async function DashboardDokter() {
   const supabase = await createServerSupabaseClient()
@@ -50,14 +51,20 @@ export default async function DashboardDokter() {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-600 via-emerald-600 to-emerald-800 p-8 sm:p-10 text-white shadow-xl">
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl" />
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-teal-600 via-emerald-500 to-emerald-700 p-8 sm:p-12 text-white shadow-2xl shadow-emerald-900/20">
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-teal-300/30 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-400/20 rounded-full blur-[100px] pointer-events-none" />
         
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/10 text-xs font-semibold tracking-wider uppercase mb-2">
-            <Activity className="w-4 h-4 text-emerald-300" />
-            Panel Dokter
+        <div className="relative z-10 space-y-4">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-wider uppercase shadow-sm">
+              <Activity className="w-4 h-4 text-emerald-300 animate-pulse" />
+              Panel Dokter
+            </div>
+            <div className="text-xs font-medium text-emerald-100 bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+              <LiveDate />
+            </div>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Selamat Datang, dr. {displayName}</h1>
           <p className="text-emerald-50 font-medium max-w-lg leading-relaxed text-sm sm:text-base">
@@ -68,31 +75,32 @@ export default async function DashboardDokter() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-gradient-to-br from-emerald-500/5 to-transparent relative overflow-hidden">
+        <div className="bg-white rounded-[1.5rem] border border-slate-100/80 p-6 shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1.5 transition-all duration-300 bg-gradient-to-br from-emerald-500/5 to-transparent relative overflow-hidden group">
           <div className="flex items-center gap-5 relative z-10">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 shadow-sm">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
               <ClipboardList className="w-7 h-7" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Antrian Hari Ini</p>
-              <p className="text-3xl font-black text-slate-800 mt-1">{antrianCount || 0}</p>
+              <p className="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest">Antrian Hari Ini</p>
+              <p className="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">{antrianCount || 0}</p>
             </div>
           </div>
-          <div className="absolute -right-4 -bottom-4 opacity-5 text-emerald-500 transform rotate-12">
+          <div className="absolute -right-4 -bottom-4 opacity-[0.03] text-emerald-500 transform rotate-12 group-hover:scale-125 transition-transform duration-500 pointer-events-none">
             <Users className="w-32 h-32" />
           </div>
         </div>
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-gradient-to-br from-teal-500/5 to-transparent relative overflow-hidden">
+        
+        <div className="bg-white rounded-[1.5rem] border border-slate-100/80 p-6 shadow-sm hover:shadow-xl hover:shadow-teal-500/5 hover:-translate-y-1.5 transition-all duration-300 bg-gradient-to-br from-teal-500/5 to-transparent relative overflow-hidden group">
           <div className="flex items-center gap-5 relative z-10">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-teal-500/10 text-teal-600 border border-teal-500/20 shadow-sm">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-teal-500/10 text-teal-600 border border-teal-500/20 shadow-sm group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
               <FolderOpen className="w-7 h-7" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Rekam Medis</p>
-              <p className="text-3xl font-black text-slate-800 mt-1">{rekamMedisCount || 0}</p>
+              <p className="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest">Total Rekam Medis</p>
+              <p className="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">{rekamMedisCount || 0}</p>
             </div>
           </div>
-          <div className="absolute -right-4 -bottom-4 opacity-5 text-teal-500 transform -rotate-12">
+          <div className="absolute -right-4 -bottom-4 opacity-[0.03] text-teal-500 transform -rotate-12 group-hover:scale-125 transition-transform duration-500 pointer-events-none">
             <FolderOpen className="w-32 h-32" />
           </div>
         </div>

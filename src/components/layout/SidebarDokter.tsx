@@ -8,6 +8,7 @@ const menus = [
   { href: '/dashboard/dokter', label: 'Dashboard', icon: '🏠' },
   { href: '/dashboard/dokter/antrian', label: 'Antrian Pasien', icon: '👥' },
   { href: '/dashboard/dokter/rekam-medis', label: 'Rekam Medis', icon: '📁' },
+  { href: '/dashboard/dokter/pengaturan', label: 'Akun Saya', icon: '⚙️' },
 ]
 
 export default function SidebarDokter({
@@ -46,14 +47,19 @@ export default function SidebarDokter({
         {/* Brand Logo Header */}
         <div className="p-5 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xl">
-              👨‍⚕️
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-cyan-500/30 flex items-center justify-center shadow-lg shadow-cyan-500/10 overflow-hidden">
+              <img 
+                src="/logo.png" 
+                alt="Logo" 
+                className="w-7 h-7 object-contain drop-shadow-md"
+                onError={(e) => { e.currentTarget.style.display='none'; e.currentTarget.parentElement?.insertAdjacentText('beforeend', '👨‍⚕️') }} 
+              />
             </div>
             <div>
               <p className="font-extrabold text-white text-base tracking-tight leading-tight">
                 CareClick
               </p>
-              <p className="text-[10px] text-slate-500 tracking-widest uppercase mt-0.5">
+              <p className="text-[10px] text-cyan-400 tracking-widest uppercase mt-0.5">
                 Clinic OS
               </p>
             </div>

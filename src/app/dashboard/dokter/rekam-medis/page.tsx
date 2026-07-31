@@ -14,9 +14,21 @@ export default function DokterRekamMedisPage() {
   const [search, setSearch] = useState('')
   const [form, setForm] = useState({
     pasien_id: '', dokter_id: '', tanggal: new Date().toISOString().split('T')[0],
-    keluhan: '', diagnosis: '', resep: '', catatan: '', status_resep: 'menunggu'
+    keluhan: '', diagnosis: '', resep: '', catatan: ''
   })
   const [currentUser, setCurrentUser] = useState<any>(null)
+
+  useEffect(() => {
+    // Auto-open modal jika ada pasien_id di URL
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const pasienIdParam = params.get('pasien_id')
+      if (pasienIdParam) {
+        setForm(prev => ({ ...prev, pasien_id: pasienIdParam }))
+        setShowModal(true)
+      }
+    }
+  }, [])
 
   async function fetchData() {
     setLoading(true)
@@ -25,14 +37,27 @@ export default function DokterRekamMedisPage() {
 
     if (user) {
       setForm(prev => ({ ...prev, dokter_id: user.id }))
+      const today = new Date().toISOString().split('T')[0]
       
-      const [{ data: rows }, { data: pasiens }, { data: dokters }] = await Promise.all([
+      const [{ data: rows }, { data: antrians }, { data: dokters }] = await Promise.all([
         supabase.from('rekam_medis').select('*, pasien(nama), dokter(nama)').eq('dokter_id', user.id).order('tanggal', { ascending: false }),
-        supabase.from('pasien').select('id, nama').order('nama'),
+        supabase.from('antrian').select('pasien_id, pasien(id, nama)').eq('dokter_id', user.id).eq('tanggal', today),
         supabase.from('dokter').select('id, nama').eq('id', user.id),
       ])
+      
+      // Ambil daftar pasien unik dari antrian hari ini
+      const uniquePasiens = new Map()
+      if (antrians) {
+        antrians.forEach((a: any) => {
+          if (a.pasien) uniquePasiens.set(a.pasien.id, a.pasien)
+        })
+      }
+      
+      // Jika pasien_id sudah diset via URL, pastikan pasien tersebut ada di list (meski antrian sudah berubah statusnya dll)
+      // Namun karena requirement hanya antrean hari ini, seharusnya sudah tercover jika pasien masih ada di antrian.
+
       setData(rows || [])
-      setPasienList((pasiens as any) || [])
+      setPasienList(Array.from(uniquePasiens.values()))
       setDokterList((dokters as any) || [])
     }
     setLoading(false)
@@ -42,10 +67,19 @@ export default function DokterRekamMedisPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const status_resep = form.resep.trim() === '' ? 'selesai' : 'menunggu'
-    await supabase.from('rekam_medis').insert({ ...form, status_resep })
+    
+    // Langsung insert tanpa status_resep
+    const { data, error } = await supabase.from('rekam_medis').insert(form).select()
+    
+    if (error) {
+      console.error("Supabase Insert Error:", error)
+      alert(`Gagal menyimpan rekam medis: ${error.message}`)
+      return
+    }
+
+    alert('Rekam medis berhasil disimpan!')
     setShowModal(false)
-    setForm({ pasien_id: '', dokter_id: currentUser?.id || '', tanggal: new Date().toISOString().split('T')[0], keluhan: '', diagnosis: '', resep: '', catatan: '', status_resep: 'menunggu' })
+    setForm({ pasien_id: '', dokter_id: currentUser?.id || '', tanggal: new Date().toISOString().split('T')[0], keluhan: '', diagnosis: '', resep: '', catatan: '' })
     fetchData()
   }
 
@@ -87,7 +121,6 @@ export default function DokterRekamMedisPage() {
                   <th className="text-left py-3 px-2 font-medium text-gray-500">Dokter</th>
                   <th className="text-left py-3 px-2 font-medium text-gray-500">Keluhan</th>
                   <th className="text-left py-3 px-2 font-medium text-gray-500">Diagnosis</th>
-                  <th className="text-left py-3 px-2 font-medium text-gray-500">Status Resep</th>
                 </tr>
               </thead>
               <tbody>
@@ -98,11 +131,6 @@ export default function DokterRekamMedisPage() {
                     <td className="py-3 px-2 text-gray-600">{r.dokter?.nama || '-'}</td>
                     <td className="py-3 px-2 text-gray-600 max-w-[200px] truncate">{r.keluhan}</td>
                     <td className="py-3 px-2 text-gray-600 max-w-[200px] truncate">{r.diagnosis}</td>
-                    <td className="py-3 px-2 text-gray-600">
-                      <span className={`px-2 py-1 text-xs rounded ${r.status_resep === 'selesai' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                        {r.status_resep}
-                      </span>
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -117,11 +145,17 @@ export default function DokterRekamMedisPage() {
             <h2 className="text-lg font-bold text-gray-900 mb-4">Input Rekam Medis & Resep</h2>
             <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <label className="label">Pasien</label>
-                <select className="input-field" required value={form.pasien_id} onChange={(e) => setForm({ ...form, pasien_id: e.target.value })}>
-                  <option value="">-- Pilih Pasien --</option>
-                  {pasienList.map((p) => <option key={p.id} value={p.id}>{p.nama}</option>)}
-                </select>
+                <label className="label">Pasien (Dari Antrean Hari Ini)</label>
+                {pasienList.length === 0 ? (
+                  <p className="text-sm text-red-500 py-2 border rounded px-3 bg-red-50 border-red-200">
+                    Belum ada pasien yang mengambil antrean ke Anda hari ini.
+                  </p>
+                ) : (
+                  <select className="input-field" required value={form.pasien_id} onChange={(e) => setForm({ ...form, pasien_id: e.target.value })}>
+                    <option value="">-- Pilih Pasien di Antrean --</option>
+                    {pasienList.map((p) => <option key={p.id} value={p.id}>{p.nama}</option>)}
+                  </select>
+                )}
               </div>
               <div>
                 <label className="label">Dokter (Anda)</label>

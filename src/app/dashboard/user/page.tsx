@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import Link from 'next/link'
 import { Ticket, History, User, HeartPulse, MapPin, Stethoscope, Calendar, Clock, ChevronRight } from 'lucide-react'
+import LiveDate from '@/components/LiveDate'
 
 export default async function UserDashboard() {
   const supabase = await createServerSupabaseClient()
@@ -40,17 +41,23 @@ export default async function UserDashboard() {
   return (
     <div className="space-y-8">
       {/* Welcome Banner Pasien */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500 via-indigo-500 to-violet-600 p-8 sm:p-10 text-white shadow-xl">
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl" />
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-600 p-8 sm:p-12 text-white shadow-2xl shadow-violet-900/20">
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-violet-300/30 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-400/20 rounded-full blur-[100px] pointer-events-none" />
         
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/10 text-xs font-semibold tracking-wider uppercase mb-2">
-            <HeartPulse className="w-4 h-4 text-pink-300" />
-            Portal Pasien
+        <div className="relative z-10 space-y-4">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-wider uppercase shadow-sm">
+              <HeartPulse className="w-4 h-4 text-pink-300 animate-pulse" />
+              Portal Pasien
+            </div>
+            <div className="text-xs font-medium text-white/80 bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+              <LiveDate />
+            </div>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Halo, {displayName}</h1>
-          <p className="text-blue-50 font-medium max-w-lg leading-relaxed text-sm sm:text-base">
+          <p className="text-indigo-50 font-medium max-w-lg leading-relaxed text-sm sm:text-base">
             Pantau status antrian klinik Anda secara real-time dan lihat catatan riwayat kesehatan Anda dengan mudah di satu tempat.
           </p>
         </div>
@@ -58,20 +65,20 @@ export default async function UserDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Card Antrian */}
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-sm flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-5 text-blue-600 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
+        <div className="bg-white rounded-[1.5rem] border border-slate-100/80 p-6 sm:p-8 shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1 transition-all duration-300">
+          <div className="absolute top-0 right-0 p-8 opacity-[0.03] text-indigo-600 transform translate-x-4 -translate-y-4 group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-700 pointer-events-none">
             <Ticket className="w-40 h-40" />
           </div>
           
-          <div className="relative z-10">
+          <div className="relative z-10 flex flex-col h-full">
             <div className="flex items-center gap-5">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-blue-500/10 text-blue-600 border border-blue-500/20 shadow-sm">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                 <Ticket className="w-7 h-7" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Status Antrian Anda</p>
-                <h2 className="text-2xl font-black text-slate-800 mt-1">
-                  {antrianAktif ? `Nomor ${antrianAktif.nomor_antrian}` : 'Belum Ada Antrian'}
+                <p className="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest">Status Antrian Anda</p>
+                <h2 className="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">
+                  {antrianAktif ? `Nomor ${antrianAktif.nomor_antrian}` : 'Belum Ada'}
                 </h2>
               </div>
             </div>
@@ -116,20 +123,20 @@ export default async function UserDashboard() {
         </div>
 
         {/* Card Riwayat Medis */}
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-sm relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-5 text-violet-600 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
+        <div className="bg-white rounded-[1.5rem] border border-slate-100/80 p-6 sm:p-8 shadow-sm relative overflow-hidden group hover:shadow-xl hover:shadow-violet-500/5 hover:-translate-y-1 transition-all duration-300">
+          <div className="absolute top-0 right-0 p-8 opacity-[0.03] text-violet-600 transform translate-x-4 -translate-y-4 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-700 pointer-events-none">
             <History className="w-40 h-40" />
           </div>
 
           <div className="relative z-10 flex flex-col h-full">
             <div className="flex items-center gap-5">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-violet-500/10 text-violet-600 border border-violet-500/20 shadow-sm">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-violet-500/10 text-violet-600 border border-violet-500/20 shadow-sm group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
                 <History className="w-7 h-7" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pemeriksaan Terakhir</p>
-                <h2 className="text-2xl font-black text-slate-800 mt-1">
-                  {riwayatMedis && riwayatMedis.length > 0 ? `${riwayatMedis.length} Riwayat` : 'Belum Ada Pemeriksaan'}
+                <p className="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest">Pemeriksaan Terakhir</p>
+                <h2 className="text-3xl font-black text-slate-800 mt-0.5 tracking-tight">
+                  {riwayatMedis && riwayatMedis.length > 0 ? `${riwayatMedis.length} Riwayat` : 'Belum Ada'}
                 </h2>
               </div>
             </div>

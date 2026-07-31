@@ -13,6 +13,7 @@ export default async function UserLayout({
   return (
     <DashboardLayout
       sidebar={<SidebarUser userEmail={user?.email ?? ''} />}
+      bgClassName="bg-gradient-to-br from-indigo-50 via-purple-50 to-violet-100"
     >
       {children}
     </DashboardLayout>

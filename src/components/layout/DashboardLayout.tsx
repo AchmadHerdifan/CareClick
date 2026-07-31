@@ -5,18 +5,22 @@ import React, { useState } from 'react'
 export default function DashboardLayout({
   sidebar,
   children,
+  bgClassName = "bg-gradient-to-br from-blue-100 via-sky-50 to-cyan-100",
 }: {
   sidebar: React.ReactElement<{ isOpen: boolean; onToggle: () => void }>
   children: React.ReactNode
+  bgClassName?: string
 }) {
   const [isOpen, setIsOpen] = useState(true)
 
   const toggleSidebar = () => setIsOpen((prev) => !prev)
 
   return (
-    <div className="min-h-screen bg-slate-50 flex relative">
+    <div className={`min-h-screen flex relative ${bgClassName}`}>
       {/* Render Sidebar dengan props isOpen dan onToggle */}
-      {React.cloneElement(sidebar, { isOpen, onToggle: toggleSidebar })}
+      <div className="z-40 relative shadow-xl shadow-slate-200/50">
+        {React.cloneElement(sidebar, { isOpen, onToggle: toggleSidebar })}
+      </div>
 
       {/* Main Content Container */}
       <div
