@@ -40,7 +40,7 @@ export default function DashboardLayout({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3 py-1 rounded-full font-bold">
+            <span className="text-xs bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full font-bold shadow-sm shadow-cyan-500/5">
               CareClick OS
             </span>
           </div>

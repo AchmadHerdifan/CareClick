@@ -50,14 +50,19 @@ export default function SidebarAdmin({
         {/* Brand Logo Header */}
         <div className="p-5 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xl">
-              🏥
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-cyan-500/30 flex items-center justify-center shadow-lg shadow-cyan-500/10 overflow-hidden">
+              <img 
+                src="/logo.png" 
+                alt="Logo" 
+                className="w-7 h-7 object-contain drop-shadow-md"
+                onError={(e) => { e.currentTarget.style.display='none'; e.currentTarget.parentElement?.insertAdjacentText('beforeend', '🏥') }} 
+              />
             </div>
             <div>
               <p className="font-extrabold text-white text-base tracking-tight leading-tight">
                 CareClick
               </p>
-              <p className="text-[10px] text-slate-500 tracking-widest uppercase mt-0.5">
+              <p className="text-[10px] text-cyan-400 tracking-widest uppercase mt-0.5">
                 Clinic OS
               </p>
             </div>
@@ -76,7 +81,7 @@ export default function SidebarAdmin({
         </div>
 
         <div className="px-5 pt-3">
-          <span className="inline-block text-[10px] bg-blue-500/15 text-blue-400 px-2.5 py-0.5 rounded-full font-bold border border-blue-500/20">
+          <span className="inline-block text-[10px] bg-cyan-500/15 text-cyan-400 px-2.5 py-0.5 rounded-full font-bold border border-cyan-500/20 shadow-sm shadow-cyan-500/10">
             Administrator
           </span>
         </div>
@@ -91,7 +96,7 @@ export default function SidebarAdmin({
                 href={m.href}
                 className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold tracking-wide transition-all duration-200 ${
                   isActive
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/10'
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/20'
                     : 'text-slate-400 hover:bg-white/5 hover:text-white'
                 }`}
               >
