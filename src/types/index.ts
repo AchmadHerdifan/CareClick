@@ -50,7 +50,7 @@ export interface Dokter {
 }
 
 export interface JadwalDokter {
-  hari: 'Senin' | 'Selasa' | 'Rabu' | 'Kamis' | 'Jumat' | 'Sabtu'
+  hari: 'Senin' | 'Selasa' | 'Rabu' | 'Kamis' | 'Jumat' | 'Sabtu' | 'Minggu' | 'Setiap Hari'
   jam_mulai: string
   jam_selesai: string
 }
